@@ -1,0 +1,19 @@
+.indexRow {
+    margin: 10px 0 0 0;
+    padding: 0;
+    height: 100px;
+    width: 100%;
+    border: 1px solid grey;
+    border-radius: 5px;
+}
+
+.indexIcon {
+    width: 90px;
+    height: 90px;
+    margin: 5px 0 0 75px;
+}
+
+.indexProfileName {
+    height: 90px;
+    line-height: 90px;
+}
