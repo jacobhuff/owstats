@@ -13,7 +13,7 @@
     "ejs": "^2.6.1",
     "express": "^4.16.4",
     "mysql": "^2.16.0",
-    "owapi": "^2.0.3",
+    "owapi": "https://github.com/jacobhuff/overwatch-api/tarball/master",
     "request": "https://github.com/jacobhuff/request/tarball/master"
   }
 }

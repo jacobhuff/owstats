@@ -1,0 +1,1131 @@
+<% include partials/header.ejs %>
+
+<div class="user-container">
+    <div class="user-row">
+        <div class="user-icon-div">
+            <img class="user-icon" src=<%= userData.profile_image %>>
+        </div>
+        <div class="user-contents-div">
+            <div class="user-name"><%= userData.username %></div>
+            <div class="user-data">
+                <div class="general-user-data">
+                    Season: <%= userData.season %> 
+                    <span class="divider">
+                        |
+                    </span> 
+                    Rank: <%= userData.user_rank %> 
+                    <span class="divider">
+                        |
+                    </span> 
+                    Level: <%= userData.level %>
+                </div>
+            </div>
+        </div>
+        <div class="refresh-icon-div">
+            <form method="post" action="/update-stats/<%= userData.username %>">
+                <button type="submit" class="fas fa-sync-alt fa-3x user-refresh"></button>
+            </form>
+        </div>
+    </div>
+
+    <% heroData.forEach(function(hero) { %>
+        <div class="hero-stat">
+            <div class="gen-hero-stats">
+                <div class="hero-name">
+                    <div class="hero-name-text"><%= hero["hero_name"] %></div>
+                    <div class="descriptor">Hero</div>
+                </div>
+                <div class="hero-record">
+                    <div class="hero-record-text">
+                        <span class="games-won">
+                            <%= hero["GamesWon"] %> - 
+                        </span>
+                        <span class="games-lost">
+                            <%= hero["GamesLost"] %>
+                        </span>
+                    </div>
+                    <div class="descriptor">Record</div>
+                </div>
+                <div class="win-percentage">
+                    <div class="win-percentage-text"><%= hero["WinPercentage"] %>%</div>
+                    <div class="descriptor">Win Rate</div>
+                </div>
+                <div class="hero-time">
+                    <div class="hero-time-text"><%= timeToMin(hero["TimePlayed"].split(':'), false) %></div>
+                    <div class="descriptor">Time Played</div>
+                </div>
+            </div>
+            <div class="main-hero-stats">
+                <div class="specific-stat-div">
+                    <div class="specific-stat"><%= hero["Elims"] %></div>
+                    <div class="specific-stat-text">Eliminations</div>
+                </div>
+                <div class="specific-stat-div">
+                    <div class="specific-stat"><%= hero["ObjectiveKills"] %></div>
+                    <div class="specific-stat-text">Objective Kills</div>
+                </div>
+                <div class="specific-stat-div">
+                    <div class="specific-stat">
+                        <%
+                            if (hero.ObjectiveTime !== null) {
+                        %><%= perTenMin(timeToMin(hero["ObjectiveTime"].split(':'), true), hero["TimePlayed"], true) %><%
+                            } else {
+                                %>00:00<%
+                            }
+                        %>
+                    </div>
+                    <div class="specific-stat-text">Objective Time</div>
+                </div>
+                <div class="specific-stat-div">
+                    <div class="specific-stat"><%= hero["HeroDamageDone"].toFixed(0) %></div>
+                    <div class="specific-stat-text">Damage</div>
+                </div>
+        <% switch (hero.hero_name) {
+            case "Ana": %>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["HealingDone"].toFixed(0) %></div>
+                            <div class="specific-stat-text">Healing</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["Deaths"] %></div>
+                            <div class="specific-stat-text">Deaths</div>
+                        </div>
+                    </div>
+                    <div class="specific-hero-stats">
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["ScopedAccuracy"] %></div>
+                            <div class="specific-stat-text">Scoped Accuracy</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["UnscopedAccuracy"] %></div>
+                            <div class="specific-stat-text">Unscoped Accuracy</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["EnemiesSlept"] %></div>
+                            <div class="specific-stat-text">Enemies Slept</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["NanoBoostAssists"] %></div>
+                            <div class="specific-stat-text">Nano Assists</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["DefensiveAssists"] %></div>
+                            <div class="specific-stat-text">Defensive Assists</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["OffensiveAssists"] %></div>
+                            <div class="specific-stat-text">Offensive Assists</div>
+                        </div>
+                    </div>
+                </div>
+                <% break;
+            case "Ashe": %>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["Deaths"] %></div>
+                            <div class="specific-stat-text">Deaths</div>
+                        </div>
+                    </div>
+                    <div class="specific-hero-stats">
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["ScopedAccuracy"] %>%</div>
+                            <div class="specific-stat-text">Scoped Accuracy</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["ScopedCritAccuracy"] %>%</div>
+                            <div class="specific-stat-text">Scoped Crits</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["BobKills"] %></div>
+                            <div class="specific-stat-text">Bob Kills</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["CoachGunKills"] %></div>
+                            <div class="specific-stat-text">Coach Kills</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["DynamiteKills"] %></div>
+                            <div class="specific-stat-text">Dynamite Kills</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["FinalBlows"] %></div>
+                            <div class="specific-stat-text">Final Blows</div>
+                        </div>
+                    </div>
+                </div>
+                <% break;
+            case "Bastion": %>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["SelfHealing"] %></div>
+                            <div class="specific-stat-text">Self Healing</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["Deaths"] %></div>
+                            <div class="specific-stat-text">Deaths</div>
+                        </div>
+                    </div>
+                    <div class="specific-stat-div">
+                        <div class="specific-stat"><%= hero["WeaponAccuracy"] %>%</div>
+                        <div class="specific-stat-text">Weapon Accuracy</div>
+                    </div>
+                    <div class="specific-stat-div">
+                        <div class="specific-stat"><%= hero["TankKills"] %></div>
+                        <div class="specific-stat-text">Tank Kills</div>
+                    </div>
+                    <div class="specific-stat-div">
+                        <div class="specific-stat"><%= hero["SentryKills"] %></div>
+                        <div class="specific-stat-text">Sentry Kills</div>
+                    </div>
+                    <div class="specific-stat-div">
+                        <div class="specific-stat"><%= hero["ReconKills"] %></div>
+                        <div class="specific-stat-text">Recon Kills</div>
+                    </div>
+                    <div class="specific-stat-div">
+                        <div class="specific-stat"><%= hero["FinalBlows"] %></div>
+                        <div class="specific-stat-text">Final Blows</div>
+                    </div>
+                </div>
+                <% break;
+            case "Brigitte": %>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["HealingDone"].toFixed(0) %></div>
+                            <div class="specific-stat-text">Healing</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["Deaths"] %></div>
+                            <div class="specific-stat-text">Deaths</div>
+                        </div>
+                    </div>
+                    <div class="specific-hero-stats">
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["ArmorProvided"] %></div>
+                            <div class="specific-stat-text">Armor Provided</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["InspireUptime"] %></div>
+                            <div class="specific-stat-text">Inspire Uptime</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["DamageBlocked"] %></div>
+                            <div class="specific-stat-text">Damage Blocked</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["DefensiveAssists"] %></div>
+                            <div class="specific-stat-text">Defensive Assists</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["OffensiveAssists"] %></div>
+                            <div class="specific-stat-text">Offensive Assists</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["FinalBlows"] %></div>
+                            <div class="specific-stat-text">Final Blows</div>
+                        </div>
+                    </div>
+                </div>
+                <% break;
+            case "D.Va": %>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["Deaths"] %></div>
+                            <div class="specific-stat-text">Deaths</div>
+                        </div>
+                    </div>
+                    <div class="specific-hero-stats">
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["WeaponAccuracy"] %>%</div>
+                            <div class="specific-stat-text">Weapon Accuracy</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["SelfDestructKills"] %></div>
+                            <div class="specific-stat-text">Destruct Kills</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["DamageBlocked"] %></div>
+                            <div class="specific-stat-text">Damage Blocked</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["MechDeaths"] %></div>
+                            <div class="specific-stat-text">Mech Deaths</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["MechsCalled"] %></div>
+                            <div class="specific-stat-text">Mechs Called</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["FinalBlows"] %></div>
+                            <div class="specific-stat-text">Final Blows</div>
+                        </div>
+                    </div>
+                </div>
+                <% break;
+            case "Doomfist": %>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["Deaths"] %></div>
+                            <div class="specific-stat-text">Deaths</div>
+                        </div>
+                    </div>
+                    <div class="specific-hero-stats">
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["WeaponAccuracy"] %>%</div>
+                            <div class="specific-stat-text">Weapon Accuracy</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["AbilityDamageDone"] %></div>
+                            <div class="specific-stat-text">Ability Damage</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["MeteorStrikeKills"] %></div>
+                            <div class="specific-stat-text">Meteor Kills</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["ShieldsCreated"] %></div>
+                            <div class="specific-stat-text">Shields Created</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["FinalBlows"] %></div>
+                            <div class="specific-stat-text">Final Blows</div>
+                        </div>
+                    </div>
+                </div>
+                <% break;
+            case "Genji": %>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["Deaths"] %></div>
+                            <div class="specific-stat-text">Deaths</div>
+                        </div>
+                    </div>
+                    <div class="specific-hero-stats">
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["WeaponAccuracy"] %>%</div>
+                            <div class="specific-stat-text">Weapon Accuracy</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["CritHitAcc"] %>%</div>
+                            <div class="specific-stat-text">Critical Hits</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["DragonbladeKills"] %></div>
+                            <div class="specific-stat-text">Blade Kills</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["DamageReflected"] %></div>
+                            <div class="specific-stat-text">Damage Reflected</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["DeflectionKills"] %></div>
+                            <div class="specific-stat-text">Deflect Kills</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["FinalBlows"] %></div>
+                            <div class="specific-stat-text">Final Blows</div>
+                        </div>
+                    </div>
+                </div>
+                <% break;
+            case "Hanzo": %>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["Deaths"] %></div>
+                            <div class="specific-stat-text">Deaths</div>
+                        </div>
+                    </div>
+                    <div class="specific-hero-stats">
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["WeaponAccuracy"] %>%</div>
+                            <div class="specific-stat-text">Weapon Accuracy</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["CritHitAcc"] %>%</div>
+                            <div class="specific-stat-text">Critical Hits</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["DragonstrikeKills"] %></div>
+                            <div class="specific-stat-text">Dragon Kills</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["StormArrowKills"] %></div>
+                            <div class="specific-stat-text">Storm Kills</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["ReconAssists"] %></div>
+                            <div class="specific-stat-text">Recon Assists</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["FinalBlows"] %></div>
+                            <div class="specific-stat-text">Final Blows</div>
+                        </div>
+                    </div>
+                </div>
+                <% break;
+            case "Junkrat": %>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["Deaths"] %></div>
+                            <div class="specific-stat-text">Deaths</div>
+                        </div>
+                    </div>
+                    <div class="specific-hero-stats">
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["WeaponAccuracy"] %>%</div>
+                            <div class="specific-stat-text">Weapon Accuracy</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["RiptireKills"] %></div>
+                            <div class="specific-stat-text">Tire Kills</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["ConcussionMineKills"] %></div>
+                            <div class="specific-stat-text">Mine Kills</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["EnemiesTrapped"] %></div>
+                            <div class="specific-stat-text">Enemies Trapped</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["FinalBlows"] %></div>
+                            <div class="specific-stat-text">Final Blows</div>
+                        </div>
+                    </div>
+                </div>
+                <% break;
+            case "Lúcio": %>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["HealingDone"].toFixed(0) %></div>
+                            <div class="specific-stat-text">Healing</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["Deaths"] %></div>
+                            <div class="specific-stat-text">Deaths</div>
+                        </div>
+                    </div>
+                    <div class="specific-hero-stats">
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["WeaponAccuracy"] %>%</div>
+                            <div class="specific-stat-text">Weapon Accuracy</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["CritHitAcc"] %>%</div>
+                            <div class="specific-stat-text">Critical Hits</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["SoundBarriersProvided"] %></div>
+                            <div class="specific-stat-text">Sound Barriers</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["EnvironmentalKills"] %></div>
+                            <div class="specific-stat-text">Environmental Kills</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["DefensiveAssists"] %></div>
+                            <div class="specific-stat-text">Defensive Assists</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["OffensiveAssists"] %></div>
+                            <div class="specific-stat-text">Offensive Assists</div>
+                        </div>
+                    </div>
+                </div>
+                <% break;
+            case "McCree": %>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["Deaths"] %></div>
+                            <div class="specific-stat-text">Deaths</div>
+                        </div>
+                    </div>
+                    <div class="specific-hero-stats">
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["WeaponAccuracy"] %>%</div>
+                            <div class="specific-stat-text">Weapon Accuracy</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["CritHitAcc"] %>%</div>
+                            <div class="specific-stat-text">Critical Hits</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["OverloadKills"] %></div>
+                            <div class="specific-stat-text">Deadeye Kills</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["MoltenCoreKills"] %></div>
+                            <div class="specific-stat-text">Fan Kills</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["FinalBlows"] %></div>
+                            <div class="specific-stat-text">Final Blows</div>
+                        </div>
+                    </div>
+                </div>
+                <% break;
+            case "Mei": %>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["SelfHealing"] %></div>
+                            <div class="specific-stat-text">Self Healing</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["Deaths"] %></div>
+                            <div class="specific-stat-text">Deaths</div>
+                        </div>
+                    </div>
+                    <div class="specific-hero-stats">
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["WeaponAccuracy"] %>%</div>
+                            <div class="specific-stat-text">Weapon Accuracy</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["CritHitAcc"] %>%</div>
+                            <div class="specific-stat-text">Critical Hits</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["BlizzardKills"] %></div>
+                            <div class="specific-stat-text">Blizzard Kills</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["EnemiesFrozen"] %></div>
+                            <div class="specific-stat-text">Enemies Frozen</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["DamageBlocked"] %></div>
+                            <div class="specific-stat-text">Damage Blocked</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["FinalBlows"] %></div>
+                            <div class="specific-stat-text">Final Blows</div>
+                        </div>
+                    </div>
+                </div>
+                <% break;
+            case "Moira": %>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["HealingDone"].toFixed(0) %></div>
+                            <div class="specific-stat-text">Healing</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["Deaths"] %></div>
+                            <div class="specific-stat-text">Deaths</div>
+                        </div>
+                    </div>
+                    <div class="specific-hero-stats">
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["CoalescenceHealing"] %></div>
+                            <div class="specific-stat-text">Beam Healing</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["CoalescenceKills"] %></div>
+                            <div class="specific-stat-text">Beam Kills</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["DefensiveAssists"] %></div>
+                            <div class="specific-stat-text">Defensive Assists</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["FinalBlows"] %></div>
+                            <div class="specific-stat-text">Final Blows</div>
+                        </div>
+                    </div>
+                </div>
+                <% break;
+            case "Mercy": %>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["HealingDone"].toFixed(0) %></div>
+                            <div class="specific-stat-text">Healing</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["Deaths"] %></div>
+                            <div class="specific-stat-text">Deaths</div>
+                        </div>
+                    </div>
+                    <div class="specific-hero-stats">
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["WeaponAccuracy"] %>%</div>
+                            <div class="specific-stat-text">Weapon Accuracy</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["DamageAmplified"] %></div>
+                            <div class="specific-stat-text">Damage Amplified</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["PlayersResurrected"] %></div>
+                            <div class="specific-stat-text">Resurrections</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["DefensiveAssists"] %></div>
+                            <div class="specific-stat-text">Defensive Assists</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["OffensiveAssists"] %></div>
+                            <div class="specific-stat-text">Offensive Assists</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["FinalBlows"] %></div>
+                            <div class="specific-stat-text">Final Blows</div>
+                        </div>
+                    </div>
+                </div>
+                <% break;
+            case "Orisa": %>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["Deaths"] %></div>
+                            <div class="specific-stat-text">Deaths</div>
+                        </div>
+                    </div>
+                    <div class="specific-hero-stats">
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["WeaponAccuracy"] %>%</div>
+                            <div class="specific-stat-text">Weapon Accuracy</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["DamageAmplified"] %></div>
+                            <div class="specific-stat-text">Damage Amplified</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["DamageBlocked"] %></div>
+                            <div class="specific-stat-text">Damage Blocked</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["SuperchargerAssists"] %></div>
+                            <div class="specific-stat-text">Charger Assists</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["FinalBlows"] %></div>
+                            <div class="specific-stat-text">Final Blows</div>
+                        </div>
+                    </div>
+                </div>
+                <% break;
+            case "Pharah": %>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["Deaths"] %></div>
+                            <div class="specific-stat-text">Deaths</div>
+                        </div>
+                    </div>
+                    <div class="specific-hero-stats">
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["WeaponAccuracy"] %>%</div>
+                            <div class="specific-stat-text">Weapon Accuracy</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["DirectHitAcc"] %>%</div>
+                            <div class="specific-stat-text">Direct Hit Acc</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["BarrageKills"] %></div>
+                            <div class="specific-stat-text">Barrage Kills</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["RocketDirectHits"] %></div>
+                            <div class="specific-stat-text">Direct Hits</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["FinalBlows"] %></div>
+                            <div class="specific-stat-text">Final Blows</div>
+                        </div>
+                    </div>
+                </div>
+                <% break;
+            case "Reaper": %>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["SelfHealing"] %></div>
+                            <div class="specific-stat-text">Self Healing</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["Deaths"] %></div>
+                            <div class="specific-stat-text">Deaths</div>
+                        </div>
+                    </div>
+                    <div class="specific-hero-stats">
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["WeaponAccuracy"] %>%</div>
+                            <div class="specific-stat-text">Weapon Accuracy</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["CritHitAcc"] %>%</div>
+                            <div class="specific-stat-text">Critical Hits</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["DeathBlossomKills"] %></div>
+                            <div class="specific-stat-text">Blossom Kills</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["FinalBlows"] %></div>
+                            <div class="specific-stat-text">Final Blows</div>
+                        </div>
+                    </div>
+                </div>
+                <% break;
+            case "Reinhardt": %>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["Deaths"] %></div>
+                            <div class="specific-stat-text">Deaths</div>
+                        </div>
+                    </div>
+                    <div class="specific-hero-stats">
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["EarthshatterKills"] %></div>
+                            <div class="specific-stat-text">Shatter Kills</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["ChargeKills"] %></div>
+                            <div class="specific-stat-text">Charge Kills</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["FireStrikeKills"] %></div>
+                            <div class="specific-stat-text">Fire Kills</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["DamageBlocked"] %></div>
+                            <div class="specific-stat-text">Damage Blocked</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["FinalBlows"] %></div>
+                            <div class="specific-stat-text">Final Blows</div>
+                        </div>
+                    </div>
+                </div>
+                <% break;
+            case "Roadhog": %>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["SelfHealing"] %></div>
+                            <div class="specific-stat-text">Self Healing</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["Deaths"] %></div>
+                            <div class="specific-stat-text">Deaths</div>
+                        </div>
+                    </div>
+                    <div class="specific-hero-stats">
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["WeaponAccuracy"] %>%</div>
+                            <div class="specific-stat-text">Weapon Accuracy</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["CritHitAcc"] %>%</div>
+                            <div class="specific-stat-text">Critical Hits</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["WholeHogKills"] %></div>
+                            <div class="specific-stat-text">Hog Kills</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["EnemiesHooked"] %></div>
+                            <div class="specific-stat-text">Enemies Hooked</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["HookAccuracy"] %></div>
+                            <div class="specific-stat-text">Hook Accuracy</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["EnvironmentalKills"] %></div>
+                            <div class="specific-stat-text">Environmental Kills</div>
+                        </div>
+                    </div>
+                </div>
+                <% break;
+            case "Soldier: 76": %>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["SelfHealing"] %></div>
+                            <div class="specific-stat-text">Self Healing</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["Deaths"] %></div>
+                            <div class="specific-stat-text">Deaths</div>
+                        </div>
+                    </div>
+                    <div class="specific-hero-stats">
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["WeaponAccuracy"] %>%</div>
+                            <div class="specific-stat-text">Weapon Accuracy</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["CritHitAcc"] %>%</div>
+                            <div class="specific-stat-text">Critical Hits</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["TacticalVisorKills"] %></div>
+                            <div class="specific-stat-text">Visor Kills</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["BioticFieldHealing"] %></div>
+                            <div class="specific-stat-text">Biotic Healing</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["HelixRocketKills"] %></div>
+                            <div class="specific-stat-text">Helix Kills</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["FinalBlows"] %></div>
+                            <div class="specific-stat-text">Final Blows</div>
+                        </div>
+                    </div>
+                </div>
+                <% break;
+            case "Sombra": %>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["Deaths"] %></div>
+                            <div class="specific-stat-text">Deaths</div>
+                        </div>
+                    </div>
+                    <div class="specific-hero-stats">
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["WeaponAccuracy"] %>%</div>
+                            <div class="specific-stat-text">Weapon Accuracy</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["CritHitAcc"] %>%</div>
+                            <div class="specific-stat-text">Critical Hits</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["EnemiesEMPd"] %></div>
+                            <div class="specific-stat-text">Enemies EMP'd</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["EnemiesHacked"] %></div>
+                            <div class="specific-stat-text">Enemies Hacked</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["FinalBlows"] %></div>
+                            <div class="specific-stat-text">Final Blows</div>
+                        </div>
+                    </div>
+                </div>
+                <% break;
+            case "Symmetra": %>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["Deaths"] %></div>
+                            <div class="specific-stat-text">Deaths</div>
+                        </div>
+                    </div>
+                    <div class="specific-hero-stats">
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["PrimaryFireAcc"] %>%</div>
+                            <div class="specific-stat-text">Primary Acc</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["SecondaryFireAcc"] %>%</div>
+                            <div class="specific-stat-text">Secondary Acc</div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["DamageBlocked"] %></div>
+                            <div class="specific-stat-text">Damage Blocked</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["PlayersTeleported"] %></div>
+                            <div class="specific-stat-text">Players Teleported</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["SentryTurretKills"] %></div>
+                            <div class="specific-stat-text">Turret Kills</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["FinalBlows"] %></div>
+                            <div class="specific-stat-text">Final Blows</div>
+                        </div>
+                    </div>
+                </div>
+                <% break;
+            case "Torbjörn": %>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["Deaths"] %></div>
+                            <div class="specific-stat-text">Deaths</div>
+                        </div>
+                    </div>
+                    <div class="specific-hero-stats">
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["WeaponAccuracy"] %>%</div>
+                            <div class="specific-stat-text">Weapon Accuracy</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["CritHitAcc"] %>%</div>
+                            <div class="specific-stat-text">Critical Hits</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["MoltenCoreKills"] %></div>
+                            <div class="specific-stat-text">Molten Kills</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["OverloadKills"] %></div>
+                            <div class="specific-stat-text">Overload Kills</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["FinalBlows"] %></div>
+                            <div class="specific-stat-text">Final Blows</div>
+                        </div>
+                    </div>
+                </div>
+                <% break;
+            case "Tracer": %>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["HealthRecovered"] %></div>
+                            <div class="specific-stat-text">Health Recovered</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["Deaths"] %></div>
+                            <div class="specific-stat-text">Deaths</div>
+                        </div>
+                    </div>
+                    <div class="specific-hero-stats">
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["WeaponAccuracy"] %>%</div>
+                            <div class="specific-stat-text">Weapon Accuracy</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["CritHitAcc"] %>%</div>
+                            <div class="specific-stat-text">Critical Hits</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["PulseBombKills"] %></div>
+                            <div class="specific-stat-text">Bomb Kills</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["PulseBombsAttached"] %></div>
+                            <div class="specific-stat-text">Bombs Attached</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["FinalBlows"] %></div>
+                            <div class="specific-stat-text">Final Blows</div>
+                        </div>
+                    </div>
+                </div>
+                <% break;
+            case "Widowmaker": %>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["Deaths"] %></div>
+                            <div class="specific-stat-text">Deaths</div>
+                        </div>
+                    </div>
+                    <div class="specific-hero-stats">
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["ScopedAcc"] %>%</div>
+                            <div class="specific-stat-text">Scoped Accuracy</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["ScopedCritAcc"] %>%</div>
+                            <div class="specific-stat-text">Scoped Crit Acc</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["ReconAssists"] %></div>
+                            <div class="specific-stat-text">Recon Assists</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["VenomMineKills"] %></div>
+                            <div class="specific-stat-text">Mine Kills</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["FinalBlows"] %></div>
+                            <div class="specific-stat-text">Final Blows</div>
+                        </div>
+                    </div>
+                </div>
+                <% break;
+            case "Winston": %>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["HealingDone"].toFixed(0) %></div>
+                            <div class="specific-stat-text">Healing</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["Deaths"] %></div>
+                            <div class="specific-stat-text">Deaths</div>
+                        </div>
+                    </div>
+                    <div class="specific-hero-stats">
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["PrimalRageKills"] %></div>
+                            <div class="specific-stat-text">Rage Kills</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["JumpPackKills"] %></div>
+                            <div class="specific-stat-text">Jump Kills</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["DamageBlocked"] %></div>
+                            <div class="specific-stat-text">Damage Blocked</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["FinalBlows"] %></div>
+                            <div class="specific-stat-text">Final Blows</div>
+                        </div>
+                    </div>
+                </div>
+                <% break;
+            case "Wrecking Ball": %>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["Deaths"] %></div>
+                            <div class="specific-stat-text">Deaths</div>
+                        </div>
+                    </div>
+                    <div class="specific-hero-stats">
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["WeaponAccuracy"] %>%</div>
+                            <div class="specific-stat-text">Weapon Accuracy</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["EnvironmentalKills"] %></div>
+                            <div class="specific-stat-text">Environmental Kills</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["FinalBlows"] %></div>
+                            <div class="specific-stat-text">Final Blows</div>
+                        </div>
+                    </div>
+                </div>
+                <% break;
+            case "Zarya": %>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["Deaths"] %></div>
+                            <div class="specific-stat-text">Deaths</div>
+                        </div>
+                    </div>
+                    <div class="specific-hero-stats">
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["PrimaryFireAcc"] %>%</div>
+                            <div class="specific-stat-text">Primary Acc</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["SecondaryFireAcc"] %>%</div>
+                            <div class="specific-stat-text">Secondary Acc</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["AverageEnergy"] %></div>
+                            <div class="specific-stat-text">Average Energy</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["HighEnergyKills"] %></div>
+                            <div class="specific-stat-text">Power Kills</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["ProjectedBarriersApplied"] %></div>
+                            <div class="specific-stat-text">Barriers Applied</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["DamageBlocked"] %></div>
+                            <div class="specific-stat-text">Damage Blocked</div>
+                        </div>
+                    </div>
+                </div>
+                <% break;
+            case "Zenyatta": %>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["HealingDone"].toFixed(0) %></div>
+                            <div class="specific-stat-text">Healing</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["Deaths"] %></div>
+                            <div class="specific-stat-text">Deaths</div>
+                        </div>
+                    </div>
+                    <div class="specific-hero-stats">
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["WeaponAccuracy"] %>%</div>
+                            <div class="specific-stat-text">Weapon Accuracy</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["CritHitAcc"] %>%</div>
+                            <div class="specific-stat-text">Critical Hits</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["TranscendenceHealing"].toFixed(0) %></div>
+                            <div class="specific-stat-text">Trans Healing</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["DefensiveAssists"] %></div>
+                            <div class="specific-stat-text">Defensive Assists</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["OffensiveAssists"] %></div>
+                            <div class="specific-stat-text">Offensive Assists</div>
+                        </div>
+                        <div class="specific-stat-div">
+                            <div class="specific-stat"><%= hero["FinalBlows"] %></div>
+                            <div class="specific-stat-text">Final Blows</div>
+                        </div>
+                    </div>
+                </div>
+                <% break;
+        }
+    }) %>
+    
+</div>
+</body>
+</html>
+
+<%
+    function timeToMin(timeArray, isObjTime) {
+
+        if (timeArray[2] === undefined) {
+            var minutes = timeArray[0];
+            if (!isObjTime) { 
+                if (minutes < 10) { 
+                    return minutes[1] + " minutes";
+                } else {
+                    return minutes + " minutes";
+                }
+            } else { 
+                return minutes * 60 + parseInt(timeArray[1], 10);
+            }
+        } else {
+            var hours = timeArray[0];
+            var minutes = timeArray[1];
+            if (hours[0] === '0' && hours[1] === '0') {
+                if (!isObjTime) {
+                    if (minutes < 10) { 
+                        return minutes[1] + " minutes";
+                    } else {
+                        return minutes + " minutes";
+                    }
+                } else { 
+                    return minutes * 60 + parseInt(timeArray[2], 10);
+                }
+            }
+            if (hours[0] === '0') {
+                if (hours[1] === '1') {
+                    if (!isObjTime) { return hours[1] + " hour"; }
+                    else { 
+                        var hoursObj = hours[1] * 3600;
+                        var minutesObj = minutes * 60;
+                        return (parseInt(hoursObj, 10) + parseInt(minutesObj,10));
+                     }
+                } else {
+                    if (!isObjTime) { return hours[1] + " hours"; }
+                    else { 
+                        var hoursObj = hours * 3600;
+                        var minutesObj = minutes * 60;
+                        return (parseInt(hoursObj, 10) + parseInt(minutesObj,10)); 
+                    }
+                }
+            } else {
+                if (!isObjTime) { return hours + " hours"; }
+                else { return hours * 360}
+            }
+        }
+    }
+
+    function perTenMin(value, timePlayed, isObjTime) {
+        
+        var timeArray = timePlayed.split(':');
+        var hoursToMin = timeArray[0] * 60;
+        var totalMin = hoursToMin + parseInt(timeArray[1], 10);
+        var divider = totalMin / 10;
+        var returnValue = (value / divider);
+        if (isObjTime) {
+            var seconds = returnValue.toFixed(0);
+            if (seconds < 60) {
+                if (seconds < 10) {
+                    return "00:0" + seconds;
+                } else {
+                    return "00:" + seconds;
+                }
+            } else if (seconds < 3600) {
+                var minutes = Math.floor((seconds / 60).toFixed(1));
+                var newSeconds = seconds - (minutes * 60)
+                if (newSeconds < 10) {
+                    return minutes + ":0" + newSeconds;
+                } else {
+                    return minutes + ":" + newSeconds;
+                }
+            }
+        } else {
+            var hours = Math.floor((seconds / 360).toFixed(1));
+            var minutes = Math.floor((seconds / 60).toFixed(1));
+        }
+        if (returnValue >= 100) {
+            return (returnValue).toFixed(0);
+        } else {
+            return (returnValue).toFixed(2);
+        }
+    }
+%>

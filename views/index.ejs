@@ -1,24 +1,13 @@
-<% include partials/header.ejs %>
+<% include partials/header %>
 
-<div class="container">
-    <div class="row indexRow">
-        <div class="col indexCol">
-            <img class="indexIcon" src=<%= data[0].profile_image %>>
-        </div>
-        <div class="col indexCol"><h4 class="indexProfileName"><%= data[0].username %></h4></div>
+    <div class="container">
+        <form id="search-form" method="post" action="/">
+            <input id="search-field" name="search-field" type="text" placeholder="Username" autocomplete="off"
+            onfocus="this.placeholder = ''"
+            onblur="this.placeholder = 'Username'">
+            <button id="search-button" type="submit" name="search-button">Search</button>
+        </form>
     </div>
-    <div class="row indexRow">
-        <div class="col indexCol">
-            <img class="indexIcon" src=<%= data[1].profile_image %>>
-        </div>
-        <div class="col indexCol"><h4 class="indexProfileName"><%= data[1].username %></h4></div>
-    </div>
-    <div class="row indexRow">
-        <div class="col indexCol">
-            <img class="indexIcon" src=<%= data[2].profile_image %>>
-        </div>
-        <div class="col indexCol"><h4 class="indexProfileName"><%= data[2].username %></h4></div>
-    </div>
-</div>
+
 </body>
 </html>
