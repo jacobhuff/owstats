@@ -4,7 +4,11 @@ module.exports = {
         if (timeArray[2] === undefined) {
             // user has played less than 1 hour
             // get minutes and divide by 10
-            var factor = parseInt(timeArray[0], 10) / 10;
+            if (timeArray[0] !== '00') {
+                var factor = parseInt(timeArray[0], 10) / 10;
+            } else {
+                var factor = (parseInt(timeArray[1], 10) / 60) / 10;
+            }
         } else {
             // user has played more than 1 hour
             // convert hours to minutes, add to minutes and divide by 10

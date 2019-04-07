@@ -1,0 +1,24 @@
+<% include partials/header.ejs %>
+
+<div class="compare-container">
+    <div class="compare-header-div">
+        <div class="compare-header">Compare Players</div>
+    </div>
+    <div class="compare-div">
+        <div class="compare-user1"><%= username %></div>
+        <div class="compare-vs">VS.</div>
+        <form class="compare-form" method="post" action="/compare/form/<%= username %>/<%= platform %>">
+            <input class="go-field" name="go-field" type="text" placeholder="Username" autocomplete="off"
+            onfocus="this.placeholder = ''"
+            onblur="this.placeholder = 'Username'">
+            <select name="platform" class="go-dropdown">
+                <option value="pc">PC</option>
+                <option value="xbl">Xbox</option>
+                <option value="psn">PlayStation</option>
+            </select>
+            <button class="go-button" type="submit">Go</button>
+        </form>
+    </div>
+</div>
+
+<% include partials/footer %>

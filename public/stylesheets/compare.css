@@ -1,0 +1,334 @@
+.compare-container {
+    margin: 0 auto;
+    padding-top: 10px;
+    width: 960px;
+    min-height: 100vh;
+    color: white;
+    margin-bottom: 70px;
+}
+
+.compare-header-div {
+    margin: 300px auto 0 auto;
+    width: 960px;
+    height: 50px;
+}
+
+.compare-header {
+    line-height: 50px;
+    vertical-align: bottom;
+    float: left;
+    font-family: 'Staatliches';
+    font-size: 32px;
+    letter-spacing: 3px;
+    font-weight: bold;
+}
+
+.compare-div {
+    margin: 0 auto 0 auto;
+    width: 960px;
+    height: 100px;
+    border-radius: 4px;
+    font-family: 'Karla';
+    background-color: #586682;
+}
+
+.compare-user1, .compare-vs, .compare-form {
+    text-align: center;
+    float: left;
+    height: 100px;
+    line-height: 100px;
+    vertical-align: middle;
+    margin-left: 4%;
+}
+
+.compare-user1 {
+    width: 30%;
+    font-size: 26px;
+}
+
+.compare-vs {
+    width: 4%;
+    font-size: 26px;
+}
+
+.compare-form {
+    width: 50%;
+    margin-right: 4%;
+}
+
+.go-field, .go-button, .go-dropdown {
+    box-sizing: border-box;
+    margin-top: 27.5px;
+    text-align: center;
+    float: left;
+    height: 40px;
+    margin-left: 2%;
+    background-color: #405275;
+    border: 1px solid white;
+    border-radius: 4px;
+    color: white;
+    font-family: 'Karla';
+}
+
+.go-field {
+    width: 60%;
+    font-size: 24px;
+}
+
+.go-dropdown {
+    width: 20%;
+}
+
+.go-button {
+    width: 10%;
+    margin-right: 2%;
+    font-size: 16px;
+}
+
+.go-button:hover {
+    background-color: #586682;
+}
+
+.user1 {
+    margin: 50px auto 0 auto;
+}
+
+.compare-players-div {
+    height: 75px;
+    margin: 50px auto 0 auto;
+}
+
+.compare-players-div, .compare-stats-div {
+    width: 960px;
+    border-radius: 4px;
+    background-color: #586682;
+}
+.compare-players-div {
+    margin-bottom: 20px;
+}
+.compare-players-header-div {
+    width: 100%;
+    height: 40px;
+    border-radius: 4px;
+    background-color: #293959;
+    float: left;
+}
+.compare-players-header {
+    line-height: 45px;
+    vertical-align: bottom;
+    font-family: 'Staatliches';
+    font-size: 36px;
+    float: left;
+    margin-left: 10px;
+}
+
+.compare-dropdown-div {
+    width: 100%;
+    height: 35px;
+    float: left;
+}
+
+.dropdown-menu {
+    width: 100px;
+    height: 25px;
+    margin: 5px 0 0 20px;
+    border: 1px solid white;
+    color: white;
+    float: left;
+    background-color: #293959;
+    font-family: 'Karla';
+}
+.dropdown-icon {
+    line-height: 20px;
+    vertical-align: middle;
+    float: right;
+    margin-right: 5px;
+}
+
+.compare-stats-div {
+    margin: 20px auto 0 auto;
+    min-height: 100vh;
+    overflow: auto;
+}
+
+.stats-header {
+    width: 960px;
+    height: 40px;
+    background-color: #293959;
+    border-radius: 4px;
+    float: left;
+}
+.stats-header-text {
+    font-family: 'Staatliches';
+    font-size: 36px;
+    float: left;
+    margin-left: 10px;
+}
+.stats-container {
+    width: 100%;
+    float: left;
+    background-color: #586682;
+    border-radius: 4px;
+    margin: 0 auto 20px auto;
+}
+
+.stat-categories, .user1-stats, .user2-stats {
+    float: left;
+    
+}
+.user1-stats {
+    background-color: rgba(255, 102, 102, 0.1);
+}
+.user2-stats {
+    background-color: rgba(103, 204, 255, 0.1);
+}
+.stat-categories {
+    width: 175px;
+    border-right: 3px solid white;
+}
+
+.user1-stats, .user2-stats {
+    width: 213.5px;
+    border-right: 1px solid white;
+}
+
+.blank-cell, .user1-name, .user2-name {
+    width: 100%;
+    height: 75px;
+    line-height: 75px;
+    vertical-align: middle;
+    font-family: 'Staatliches';
+    font-size: 24px;
+    letter-spacing: 2px;
+    text-align: center;
+    border-bottom: 3px solid white;
+}
+
+.stat-name, .user-stat {
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    vertical-align: middle;
+    font-family: 'Karla';
+    text-align: center;
+    border-bottom: 1px solid white;
+}
+
+.stat-name {
+    font-size: 16px;
+}
+
+.user-stat {
+    font-size: 20px;
+}
+
+.stat-title-div {
+    width: 960px;
+    height: 30px;
+    background-color: #293959;
+}
+
+.stat-title {
+    margin-left: 5px;
+    font-family: 'Karla';
+    font-size: 18x;
+    line-height: 30px;
+    vertical-align: middle;
+}
+
+.last-in-section {
+    border-bottom: none;
+}
+
+.first-in-section {
+    height: 80px;
+    line-height: 110px;
+    vertical-align: middle;
+}
+.winner {
+    color: #0cce87;
+}
+.loser {
+    color: white;
+}
+
+#compare-message {
+    font-family: 'Karla';
+    font-size: 26px;
+    letter-spacing: 1.5px;
+    text-align: center;
+    width: 100%;
+    height: 50px;
+    margin-top: 50px;
+    float: left;
+}
+
+@media all and (max-width: 960px) {
+    .compare-header-div, .compare-div, .compare-players-div,
+    .compare-stats-div, .stat-title-div, .compare-container, .stats-header,
+    #error-message-private-compare, #error-container {
+        width: 480px;
+    }
+    .compare-header-div {
+        margin-top: 100px;
+    }
+    .compare-div {
+        height: 275px;
+    }
+    .compare-user1, .compare-vs, .compare-form {
+        width: 92%;
+        margin: 0 4% 0 4%;
+        height: 75px;
+        line-height: 75px;
+    }
+    .go-field {
+        font-size: 20px;
+    }
+    .user1-stats, .user2-stats, .stat-categories {
+        width: 32.9%;
+    }
+    .user1-name, .user2-name {
+        font-size: 18px;
+    }
+    #error-message-private-compare {
+        text-align: center;
+    }
+}
+
+@media all and (max-width: 500px) {
+    .compare-header-div, .compare-div, .compare-players-div,
+    .compare-stats-div, .stat-title-div, .compare-container, .stats-header,
+    #error-message-private-compare, #error-container {
+        width: 360px;
+    }
+    .compare-header-div {
+        margin-top: 100px;
+    }
+    .compare-div {
+        height: 275px;
+    }
+    .compare-user1, .compare-vs, .compare-form {
+        width: 92%;
+        margin: 0 4% 0 4%;
+        height: 75px;
+        line-height: 75px;
+    }
+    .go-field {
+        font-size: 20px;
+    }
+    .user1-stats, .user2-stats, .stat-categories {
+        width: 32.8%;
+    }
+    .user1-name, .user2-name {
+        font-size: 12px;
+    }
+    .user2-stats {
+        border-right: none;
+    }
+    .stat-name {
+        font-size: 13px;
+    }
+    #error-container {
+        height: 100px;
+    }
+}

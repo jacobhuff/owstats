@@ -1,0 +1,459 @@
+<% include partials/header.ejs %>
+
+<!-- DECLARE VARIABLES -->
+<%
+    var user1Level = parseInt(user1Data.level, 10);
+    var user2Level = parseInt(user2Data.level, 10);
+    var user1Rank = parseInt(user1Data.user_rank, 10);
+    var user2Rank = parseInt(user2Data.user_rank, 10);
+    var user1WinRate = ((user1Data.games_won / user1Data.games_played) * 100).toFixed(1);
+    var user2WinRate = ((user2Data.games_won / user2Data.games_played) * 100).toFixed(1);
+    var user1GamesPlayed = parseInt(user1Data.games_played, 10);
+    var user2GamesPlayed = parseInt(user2Data.games_played, 10);
+
+    var user1Elims = parseFloat(perTenMin(user1Data.elims, user1Data.time_played, false));
+    var user2Elims = parseFloat(perTenMin(user2Data.elims, user2Data.time_played, false));
+    var user1Deaths = parseFloat(perTenMin(user1Data.deaths, user1Data.time_played, false));
+    var user2Deaths = parseFloat(perTenMin(user2Data.deaths, user2Data.time_played, false));
+    var user1Healing = parseFloat(perTenMin(user1Data.healing, user1Data.time_played, false));
+    var user2Healing = parseFloat(perTenMin(user2Data.healing, user2Data.time_played, false));
+    var user1HeroDamage = parseFloat(perTenMin(user1Data.hero_damage, user1Data.time_played, false));
+    var user2HeroDamage = parseFloat(perTenMin(user2Data.hero_damage, user2Data.time_played, false));
+    var user1TimeOnFire = perTenMin(timeToMin(user1Data.time_on_fire.split(':'), true), user1Data.time_played, true);
+    var user2TimeOnFire = perTenMin(timeToMin(user2Data.time_on_fire.split(':'), true), user2Data.time_played, true);
+    var user1Cards = parseFloat(perTenMin(user1Data.cards, user1Data.time_played, false));
+    var user2Cards = parseFloat(perTenMin(user2Data.cards, user2Data.time_played, false));
+    var user1Medals = parseFloat(perTenMin(user1Data.medals, user1Data.time_played, false));
+    var user2Medals = parseFloat(perTenMin(user2Data.medals, user2Data.time_played, false));
+    var user1Gold = parseFloat(perTenMin(user1Data.gold, user1Data.time_played, false));
+    var user2Gold = parseFloat(perTenMin(user2Data.gold, user2Data.time_played, false));
+    var user1Silver = parseFloat(perTenMin(user1Data.silver, user1Data.time_played, false));
+    var user2Silver = parseFloat(perTenMin(user2Data.silver, user2Data.time_played, false));
+    var user1Bronze = parseFloat(perTenMin(user1Data.bronze, user1Data.time_played, false));
+    var user2Bronze = parseFloat(perTenMin(user2Data.bronze, user2Data.time_played, false));
+
+    var user1HealinginGame = parseFloat(user1Data.healing_in_game);
+    var user2HealinginGame = parseFloat(user2Data.healing_in_game);
+    var user1ElimsinGame = parseFloat(user1Data.elims_in_game);
+    var user2ElimsinGame = parseFloat(user2Data.elims_in_game);
+    var user1DamageinGame = parseFloat(user1Data.damage_in_game);
+    var user2DamageinGame = parseFloat(user2Data.damage_in_game);
+%>
+
+<div class="compare-container">
+    <div class="compare-players-div">    
+        <div class="compare-players-header-div">
+            <div class="compare-players-header">Compare Players</div>
+        </div>
+        <div class="compare-dropdown-div">
+            <form method="post" action="/compare/<%= user1Data.username %>/<%= user2Data.username %>/hero">
+                <select onchange="this.form.submit()" name="hero" class="dropdown-menu">
+                    <option value="all-heroes">All Heroes</option>
+                    <option value="Ana">Ana</option>
+                    <option value="Ashe">Ashe</option>
+                    <option value="Bastion">Bastion</option>
+                    <option value="Brigitte">Brigitte</option>
+                    <option value="D.Va">D.Va</option>
+                    <option value="Doomfist">Doomfist</option>
+                    <option value="Genji">Genji</option>
+                    <option value="Hanzo">Hanzo</option>
+                    <option value="Junkrat">Junkrat</option>
+                    <option value="Lúcio">Lúcio</option>
+                    <option value="McCree">McCree</option>
+                    <option value="Mei">Mei</option>
+                    <option value="Mercy">Mercy</option>
+                    <option value="Moira">Moira</option>
+                    <option value="Orisa">Orisa</option>
+                    <option value="Pharah">Pharah</option>
+                    <option value="Reaper">Reaper</option>
+                    <option value="Reinhardt">Reinhardt</option>
+                    <option value="Roadhog">Roadhog</option>
+                    <option value="Soldier">Soldier</option>
+                    <option value="Sombra">Sombra</option>
+                    <option value="Symmetra">Symmetra</option>
+                    <option value="Torbjörn">Torbjörn</option>
+                    <option value="Tracer">Tracer</option>
+                    <option value="Widowmaker">Widowmaker</option>
+                    <option value="Winston">Winston</option>
+                    <option value="Wrecking Ball">Wrecking Ball</option>
+                    <option value="Zarya">Zarya</option>
+                    <option value="Zenyatta">Zenyatta</option>
+                </select>
+            </form>
+        </div>
+    </div>
+    <div class="stats-header">
+        <div class="stats-header-text">Stats Comparison</div>
+    </div>
+    <div class="stats-container">
+        <div class="stat-categories">
+            <div class="blank-cell last-in-section"></div>
+
+            <div class="stat-title-div"><div class="stat-title">General Stats</div></div>
+            <div class="stat-name">Level</div>
+            <div class="stat-name">Skill Rating</div>
+            <div class="stat-name">Games Played</div>
+            <div class="stat-name last-in-section">Win Rate</div>
+    
+            <div class="stat-title-div"><div class="stat-title">Averages Per 10 Minutes</div></div>
+            <div class="stat-name">Eliminations</div>
+            <div class="stat-name">Deaths</div>
+            <div class="stat-name">Healing Done</div>
+            <div class="stat-name">Hero Damage</div>
+            <div class="stat-name">Time On Fire</div>
+            <div class="stat-name">Cards</div>
+            <div class="stat-name">Medals</div>
+            <div class="stat-name">Gold</div>
+            <div class="stat-name">Silver</div>
+            <div class="stat-name last-in-section">Bronze</div>
+
+            <div class="stat-title-div"><div class="stat-title">Most in Game</div></div>
+            <div class="stat-name">Healing Done</div>
+            <div class="stat-name">Eliminations</div>
+            <div class="stat-name last-in-section">Hero Damage</div>
+        </div>
+        <div class="user1-stats">
+            <div class="user1-name last-in-section"><%= user1Data.username %></div>
+            <% if (user1Level > user2Level) { %>
+                <div class="user-stat winner first-in-section">
+            <% } else { %>
+                <div class="user-stat loser first-in-section">
+            <% } %>
+                <%= user1Level %>
+            </div>
+            <% if (user1Rank > user2Rank) { %>
+                <div class="user-stat winner">
+            <% } else { %>
+                <div class="user-stat loser">
+            <% } %>
+                <%= user1Rank %>
+            </div>
+            <% if (user1GamesPlayed > user2GamesPlayed) { %>
+                <div class="user-stat winner">
+            <% } else { %>
+                <div class="user-stat loser">
+            <% } %>
+                <%= user1GamesPlayed %>
+            </div>
+            <% if (user1WinRate > user2WinRate) { %>
+                <div class="user-stat winner last-in-section">
+            <% } else { %>
+                <div class="user-stat loser last-in-section">
+            <% } %>
+                <%= user1WinRate %>
+            </div>
+
+            <% if (user1Elims > user2Elims) { %> 
+                <div class="user-stat first-in-section winner"> 
+            <% } else { %>
+                <div class="user-stat first-in-section loser">
+            <% } %>
+                <%= user1Elims %>
+            </div>
+            <% if (user1Deaths < user2Deaths) { %>
+                <div class="user-stat winner">
+            <% } else { %>
+                <div class="user-stat loser">
+            <% } %>
+                <%= user1Deaths %>
+            </div>
+            <% if (user1Healing > user2Healing) { %>
+                <div class="user-stat winner">
+            <% } else { %>
+                <div class="user-stat loser">
+            <% } %>
+                <%= user1Healing %>
+            </div>
+            <% if (user1HeroDamage > user2HeroDamage) { %>
+                <div class="user-stat winner">
+            <% } else { %>
+                <div class="user-stat loser">
+            <% } %>
+                <%= user1HeroDamage %>
+            </div>
+            <% if (user1TimeOnFire > user2TimeOnFire) { %>
+                <div class="user-stat winner">
+            <% } else { %>
+                <div class="user-stat loser">
+            <% } %>
+                <%= user1TimeOnFire %>
+            </div>
+            <% if (user1Cards > user2Cards) { %>
+                <div class="user-stat winner">
+            <% } else { %>
+                <div class="user-stat loser">
+            <% } %>
+                <%= user1Cards %>
+            </div>
+            <% if (user1Medals > user2Medals) { %>
+                <div class="user-stat winner">
+            <% } else { %>
+                <div class="user-stat loser">
+            <% } %>
+                <%= user1Medals %>
+            </div>
+            <% if (user1Gold > user2Gold) { %>
+                <div class="user-stat winner">
+            <% } else { %>
+                <div class="user-stat loser">
+            <% } %>
+                <%= user1Gold %>
+            </div>
+            <% if (user1Silver > user2Silver) { %>
+                <div class="user-stat winner">
+            <% } else { %>
+                <div class="user-stat loser">
+            <% } %>
+                <%= user1Silver %>
+            </div>
+            <% if (user1Bronze > user2Bronze) { %>
+                <div class="user-stat winner last-in-section">
+            <% } else { %>
+                <div class="user-stat loser last-in-section">
+            <% } %>
+                <%= user1Bronze %>
+            </div>
+            <% if (user1HealinginGame > user2HealinginGame) { %>
+                <div class="user-stat first-in-section winner">
+            <% } else { %>
+                <div class="user-stat first-in-section loser">
+            <% } %>
+                <%= user1HealinginGame %>
+            </div>
+            <% if (user1ElimsinGame > user2ElimsinGame) { %>
+                <div class="user-stat winner">
+            <% } else { %>
+                <div class="user-stat loser">
+            <% } %>
+                <%= user1ElimsinGame %>
+            </div>
+            <% if (user1DamageinGame > user2DamageinGame) { %>
+                <div class="user-stat winner last-in-section">
+            <% } else { %>
+                <div class="user-stat loser last-in-section">
+            <% } %>
+                <%= user1DamageinGame %>
+            </div>
+        </div>
+        <div class="user2-stats">
+            <div class="user2-name last-in-section"><%= user2Data.username %></div>
+            <% if (user1Level < user2Level) { %>
+                <div class="user-stat winner first-in-section">
+            <% } else { %>
+                <div class="user-stat loser first-in-section">
+            <% } %>
+                <%= user2Level %>
+            </div>
+            <% if (user1Rank < user2Rank) { %>
+                <div class="user-stat winner">
+            <% } else { %>
+                <div class="user-stat loser">
+            <% } %>
+                <%= user2Rank %>
+            </div>
+            <% if (user1GamesPlayed < user2GamesPlayed) { %>
+                <div class="user-stat winner">
+            <% } else { %>
+                <div class="user-stat loser">
+            <% } %>
+                <%= user2GamesPlayed %>
+            </div>
+            <% if (user1WinRate < user2WinRate) { %>
+                <div class="user-stat winner last-in-section">
+            <% } else { %>
+                <div class="user-stat loser last-in-section">
+            <% } %>
+                <%= user2WinRate %>
+            </div>
+
+            <% if (user1Elims < user2Elims) { %> 
+                <div class="user-stat first-in-section winner"> 
+            <% } else { %>
+                <div class="user-stat first-in-section loser">
+            <% } %>
+                <%= user2Elims %>
+            </div>
+            <% if (user1Deaths > user2Deaths) { %>
+                <div class="user-stat winner">
+            <% } else { %>
+                <div class="user-stat loser">
+            <% } %>
+                <%= user2Deaths %>
+            </div>
+            <% if (user1Healing < user2Healing) { %>
+                <div class="user-stat winner">
+            <% } else { %>
+                <div class="user-stat loser">
+            <% } %>
+                <%= user2Healing %>
+            </div>
+            <% if (user1HeroDamage < user2HeroDamage) { %>
+                <div class="user-stat winner">
+            <% } else { %>
+                <div class="user-stat loser">
+            <% } %>
+                <%= user2HeroDamage %>
+            </div>
+            <% if (user1TimeOnFire < user2TimeOnFire) { %>
+                <div class="user-stat winner">
+            <% } else { %>
+                <div class="user-stat loser">
+            <% } %>
+                <%= user2TimeOnFire %>
+            </div>
+            <% if (user1Cards < user2Cards) { %>
+                <div class="user-stat winner">
+            <% } else { %>
+                <div class="user-stat loser">
+            <% } %>
+                <%= user2Cards %>
+            </div>
+            <% if (user1Medals < user2Medals) { %>
+                <div class="user-stat winner">
+            <% } else { %>
+                <div class="user-stat loser">
+            <% } %>
+                <%= user2Medals %>
+            </div>
+            <% if (user1Gold < user2Gold) { %>
+                <div class="user-stat winner">
+            <% } else { %>
+                <div class="user-stat loser">
+            <% } %>
+                <%= user2Gold %>
+            </div>
+            <% if (user1Silver < user2Silver) { %>
+                <div class="user-stat winner">
+            <% } else { %>
+                <div class="user-stat loser">
+            <% } %>
+                <%= user2Silver %>
+            </div>
+            <% if (user1Bronze < user2Bronze) { %>
+                <div class="user-stat winner last-in-section">
+            <% } else { %>
+                <div class="user-stat loser last-in-section">
+            <% } %>
+                <%= user2Bronze %>
+            </div>
+            <% if (user1HealinginGame < user2HealinginGame) { %>
+                <div class="user-stat first-in-section winner">
+            <% } else { %>
+                <div class="user-stat first-in-section loser">
+            <% } %>
+                <%= user2HealinginGame %>
+            </div>
+            <% if (user1ElimsinGame < user2ElimsinGame) { %>
+                <div class="user-stat winner">
+            <% } else { %>
+                <div class="user-stat loser">
+            <% } %>
+                <%= user2ElimsinGame %>
+            </div>
+            <% if (user1DamageinGame < user2DamageinGame) { %>
+                <div class="user-stat winner last-in-section">
+            <% } else { %>
+                <div class="user-stat loser last-in-section">
+            <% } %>
+                <%= user2DamageinGame %>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+<%
+function timeToMin(timeArray, isObjTime) {
+
+    if (timeArray[2] === undefined) {
+        var minutes = timeArray[0];
+        if (!isObjTime) { 
+            if (minutes < 10) { 
+                return minutes[1] + " minutes";
+            } else {
+                return minutes + " minutes";
+            }
+        } else { 
+            return minutes * 60 + parseInt(timeArray[1], 10);
+        }
+    } else {
+        var hours = timeArray[0];
+        var minutes = timeArray[1];
+        if (hours[0] === '0' && hours[1] === '0') {
+            if (!isObjTime) {
+                if (minutes < 10) { 
+                    return minutes[1] + " minutes";
+                } else {
+                    return minutes + " minutes";
+                }
+            } else { 
+                return minutes * 60 + parseInt(timeArray[2], 10);
+            }
+        }
+        if (hours[0] === '0') {
+            if (hours[1] === '1') {
+                if (!isObjTime) { return hours[1] + " hour"; }
+                else { 
+                    var hoursObj = hours[1] * 3600;
+                    var minutesObj = minutes * 60;
+                    return (parseInt(hoursObj, 10) + parseInt(minutesObj,10));
+                    }
+            } else {
+                if (!isObjTime) { return hours[1] + " hours"; }
+                else { 
+                    var hoursObj = hours * 3600;
+                    var minutesObj = minutes * 60;
+                    return (parseInt(hoursObj, 10) + parseInt(minutesObj,10)); 
+                }
+            }
+        } else {
+            if (!isObjTime) { return hours + " hours"; }
+            else { return hours * 360}
+        }
+    }
+}
+
+function perTenMin(value, timePlayed, isObjTime) {
+        
+    var timeArray = timePlayed.split(':');
+    var totalMin;
+    if (timeArray[2] === undefined) {
+        // user has played less than hour
+        var minToSec = timeArray[0] * 60;
+        var sec = timeArray[1];
+        totalMin = (parseInt(minToSec, 10) + parseInt(sec, 10)) / 60;
+    } else {
+        var hoursToMin = timeArray[0] * 60;
+        totalMin = hoursToMin + parseInt(timeArray[1], 10);
+    }
+    var divider = totalMin / 10;
+    var returnValue = (value / divider);
+    if (isObjTime) {
+        var seconds = returnValue.toFixed(0);
+        if (seconds < 60) {
+            if (seconds < 10) {
+                return "00:0" + seconds;
+            } else {
+                return "00:" + seconds;
+            }
+        } else if (seconds < 3600) {
+            var minutes = Math.floor(seconds / 60);
+            var newSeconds = seconds - (minutes * 60)
+            if (newSeconds < 10) {
+                return minutes + ":0" + newSeconds;
+            } else {
+                return minutes + ":" + newSeconds;
+            }
+        }
+    } else {
+        var hours = Math.floor(seconds / 360);
+        var minutes = Math.floor(seconds / 60);
+    }
+    if (returnValue >= 100) {
+        return (returnValue).toFixed(0);
+    } else {
+        return (returnValue).toFixed(2);
+    }
+}
+%>

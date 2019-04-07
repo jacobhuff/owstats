@@ -1,6 +1,14 @@
 <% include partials/header.ejs %>
 
 <div class="user-container">
+    <div class="information-div">
+        <div class="information">
+            Stats shown are per 10 minutes of competitive gameplay.
+            You must play at least 10 games for stats to be displayed.
+            Try out our compare feature!
+        </div>
+    </div>
+
     <div class="user-row">
         <div class="user-icon-div">
             <img class="user-icon" src=<%= userData.profile_image %>>
@@ -22,15 +30,37 @@
             </div>
         </div>
         <div class="refresh-icon-div">
-            <form method="post" action="/update-stats/<%= userData.username %>">
+            <form method="post" action="/update-stats/<%= userData.username %>/platform=<%= platform %>">
                 <button type="submit" class="fas fa-sync-alt fa-3x user-refresh"></button>
             </form>
         </div>
     </div>
 
-    <% heroData.forEach(function(hero) { %>
+    <div class="buttons-div">
+        <form method="post" action="/user/<%= userData.username %>/compare/platform=<%= platform %>">
+            <button type="submit" class="compare-button">Compare</button>
+        </form>
+    </div>
+
+    <% if (heroData.length === 0) { %>
+        <div id="user-stat-message">
+            You must play at least 10 games with a hero for stats to be displayed!
+        </div>
+    <% } else { 
+        heroData.forEach(function(hero) { %>
         <div class="hero-stat">
             <div class="gen-hero-stats">
+                <div class="hero-portrait">
+                    <% 
+                        if (hero.hero_name === "D.Va") { %>
+                            <img class="hero-image" src="/images/DVa.png">
+                        <% } else if (hero.hero_name === "Soldier: 76") { %>
+                            <img class="hero-image" src="/images/Soldier.png">
+                        <% } else { %>
+                            <img class="hero-image" src="/images/<%= hero.hero_name %>.png">
+                        <% }
+                    %>
+                </div>
                 <div class="hero-name">
                     <div class="hero-name-text"><%= hero["hero_name"] %></div>
                     <div class="descriptor">Hero</div>
@@ -38,11 +68,16 @@
                 <div class="hero-record">
                     <div class="hero-record-text">
                         <span class="games-won">
-                            <%= hero["GamesWon"] %> - 
-                        </span>
+                            <%= hero["GamesWon"] %>
+                        </span> -
                         <span class="games-lost">
                             <%= hero["GamesLost"] %>
                         </span>
+                        
+                        <% if (hero.GamesTied !== null && hero.GamesTied > 0) { %>
+                            - <span class="games-tied"><%= hero.GamesTied %></span>
+                        <% } %>
+                        
                     </div>
                     <div class="descriptor">Record</div>
                 </div>
@@ -93,11 +128,11 @@
                     </div>
                     <div class="specific-hero-stats">
                         <div class="specific-stat-div">
-                            <div class="specific-stat"><%= hero["ScopedAccuracy"] %></div>
+                            <div class="specific-stat"><%= hero["ScopedAccuracy"] %>%</div>
                             <div class="specific-stat-text">Scoped Accuracy</div>
                         </div>
                         <div class="specific-stat-div">
-                            <div class="specific-stat"><%= hero["UnscopedAccuracy"] %></div>
+                            <div class="specific-stat"><%= hero["UnscopedAccuracy"] %>%</div>
                             <div class="specific-stat-text">Unscoped Accuracy</div>
                         </div>
                         <div class="specific-stat-div">
@@ -155,7 +190,7 @@
                 <% break;
             case "Bastion": %>
                         <div class="specific-stat-div">
-                            <div class="specific-stat"><%= hero["SelfHealing"] %></div>
+                            <div class="specific-stat"><%= hero["SelfHealing"].toFixed(0) %></div>
                             <div class="specific-stat-text">Self Healing</div>
                         </div>
                         <div class="specific-stat-div">
@@ -197,15 +232,15 @@
                     </div>
                     <div class="specific-hero-stats">
                         <div class="specific-stat-div">
-                            <div class="specific-stat"><%= hero["ArmorProvided"] %></div>
+                            <div class="specific-stat"><%= hero["ArmorProvided"].toFixed(0) %></div>
                             <div class="specific-stat-text">Armor Provided</div>
                         </div>
                         <div class="specific-stat-div">
-                            <div class="specific-stat"><%= hero["InspireUptime"] %></div>
+                            <div class="specific-stat"><%= hero["InspireUptime"] %>%</div>
                             <div class="specific-stat-text">Inspire Uptime</div>
                         </div>
                         <div class="specific-stat-div">
-                            <div class="specific-stat"><%= hero["DamageBlocked"] %></div>
+                            <div class="specific-stat"><%= hero["DamageBlocked"].toFixed(0) %></div>
                             <div class="specific-stat-text">Damage Blocked</div>
                         </div>
                         <div class="specific-stat-div">
@@ -239,7 +274,7 @@
                             <div class="specific-stat-text">Destruct Kills</div>
                         </div>
                         <div class="specific-stat-div">
-                            <div class="specific-stat"><%= hero["DamageBlocked"] %></div>
+                            <div class="specific-stat"><%= hero["DamageBlocked"].toFixed(0) %></div>
                             <div class="specific-stat-text">Damage Blocked</div>
                         </div>
                         <div class="specific-stat-div">
@@ -439,11 +474,11 @@
                             <div class="specific-stat-text">Critical Hits</div>
                         </div>
                         <div class="specific-stat-div">
-                            <div class="specific-stat"><%= hero["OverloadKills"] %></div>
+                            <div class="specific-stat"><%= hero["DeadeyeKills"] %></div>
                             <div class="specific-stat-text">Deadeye Kills</div>
                         </div>
                         <div class="specific-stat-div">
-                            <div class="specific-stat"><%= hero["MoltenCoreKills"] %></div>
+                            <div class="specific-stat"><%= hero["FantheHammerKills"] %></div>
                             <div class="specific-stat-text">Fan Kills</div>
                         </div>
                         <div class="specific-stat-div">
@@ -455,7 +490,7 @@
                 <% break;
             case "Mei": %>
                         <div class="specific-stat-div">
-                            <div class="specific-stat"><%= hero["SelfHealing"] %></div>
+                            <div class="specific-stat"><%= hero["SelfHealing"].toFixed(0) %></div>
                             <div class="specific-stat-text">Self Healing</div>
                         </div>
                         <div class="specific-stat-div">
@@ -481,7 +516,7 @@
                             <div class="specific-stat-text">Enemies Frozen</div>
                         </div>
                         <div class="specific-stat-div">
-                            <div class="specific-stat"><%= hero["DamageBlocked"] %></div>
+                            <div class="specific-stat"><%= hero["DamageBlocked"].toFixed(0) %></div>
                             <div class="specific-stat-text">Damage Blocked</div>
                         </div>
                         <div class="specific-stat-div">
@@ -503,7 +538,7 @@
                     </div>
                     <div class="specific-hero-stats">
                         <div class="specific-stat-div">
-                            <div class="specific-stat"><%= hero["CoalescenceHealing"] %></div>
+                            <div class="specific-stat"><%= hero["CoalescenceHealing"].toFixed(0) %></div>
                             <div class="specific-stat-text">Beam Healing</div>
                         </div>
                         <div class="specific-stat-div">
@@ -575,7 +610,7 @@
                             <div class="specific-stat-text">Damage Amplified</div>
                         </div>
                         <div class="specific-stat-div">
-                            <div class="specific-stat"><%= hero["DamageBlocked"] %></div>
+                            <div class="specific-stat"><%= hero["DamageBlocked"].toFixed(0) %></div>
                             <div class="specific-stat-text">Damage Blocked</div>
                         </div>
                         <div class="specific-stat-div">
@@ -621,7 +656,7 @@
                 <% break;
             case "Reaper": %>
                         <div class="specific-stat-div">
-                            <div class="specific-stat"><%= hero["SelfHealing"] %></div>
+                            <div class="specific-stat"><%= hero["SelfHealing"].toFixed(0) %></div>
                             <div class="specific-stat-text">Self Healing</div>
                         </div>
                         <div class="specific-stat-div">
@@ -669,7 +704,7 @@
                             <div class="specific-stat-text">Fire Kills</div>
                         </div>
                         <div class="specific-stat-div">
-                            <div class="specific-stat"><%= hero["DamageBlocked"] %></div>
+                            <div class="specific-stat"><%= hero["DamageBlocked"].toFixed(0) %></div>
                             <div class="specific-stat-text">Damage Blocked</div>
                         </div>
                         <div class="specific-stat-div">
@@ -681,7 +716,7 @@
                 <% break;
             case "Roadhog": %>
                         <div class="specific-stat-div">
-                            <div class="specific-stat"><%= hero["SelfHealing"] %></div>
+                            <div class="specific-stat"><%= hero["SelfHealing"].toFixed(0) %></div>
                             <div class="specific-stat-text">Self Healing</div>
                         </div>
                         <div class="specific-stat-div">
@@ -719,7 +754,7 @@
                 <% break;
             case "Soldier: 76": %>
                         <div class="specific-stat-div">
-                            <div class="specific-stat"><%= hero["SelfHealing"] %></div>
+                            <div class="specific-stat"><%= hero["SelfHealing"].toFixed(0) %></div>
                             <div class="specific-stat-text">Self Healing</div>
                         </div>
                         <div class="specific-stat-div">
@@ -800,7 +835,7 @@
                             <div class="specific-stat"><%= hero["SecondaryFireAcc"] %>%</div>
                             <div class="specific-stat-text">Secondary Acc</div>
                         <div class="specific-stat-div">
-                            <div class="specific-stat"><%= hero["DamageBlocked"] %></div>
+                            <div class="specific-stat"><%= hero["DamageBlocked"].toFixed(0) %></div>
                             <div class="specific-stat-text">Damage Blocked</div>
                         </div>
                         <div class="specific-stat-div">
@@ -914,10 +949,6 @@
                 <% break;
             case "Winston": %>
                         <div class="specific-stat-div">
-                            <div class="specific-stat"><%= hero["HealingDone"].toFixed(0) %></div>
-                            <div class="specific-stat-text">Healing</div>
-                        </div>
-                        <div class="specific-stat-div">
                             <div class="specific-stat"><%= hero["Deaths"] %></div>
                             <div class="specific-stat-text">Deaths</div>
                         </div>
@@ -928,11 +959,11 @@
                             <div class="specific-stat-text">Rage Kills</div>
                         </div>
                         <div class="specific-stat-div">
-                            <div class="specific-stat"><%= hero["JumpPackKills"] %></div>
+                            <div class="specific-stat"><%= hero["JumpKills"] %></div>
                             <div class="specific-stat-text">Jump Kills</div>
                         </div>
                         <div class="specific-stat-div">
-                            <div class="specific-stat"><%= hero["DamageBlocked"] %></div>
+                            <div class="specific-stat"><%= hero["DamageBlocked"].toFixed(0) %></div>
                             <div class="specific-stat-text">Damage Blocked</div>
                         </div>
                         <div class="specific-stat-div">
@@ -992,7 +1023,7 @@
                             <div class="specific-stat-text">Barriers Applied</div>
                         </div>
                         <div class="specific-stat-div">
-                            <div class="specific-stat"><%= hero["DamageBlocked"] %></div>
+                            <div class="specific-stat"><%= hero["DamageBlocked"].toFixed(0) %></div>
                             <div class="specific-stat-text">Damage Blocked</div>
                         </div>
                     </div>
@@ -1036,12 +1067,13 @@
                     </div>
                 </div>
                 <% break;
-        }
-    }) %>
+            }
+        }) 
+    } %>
     
 </div>
-</body>
-</html>
+
+<% include partials/footer %>
 
 <%
     function timeToMin(timeArray, isObjTime) {
@@ -1097,8 +1129,16 @@
     function perTenMin(value, timePlayed, isObjTime) {
         
         var timeArray = timePlayed.split(':');
-        var hoursToMin = timeArray[0] * 60;
-        var totalMin = hoursToMin + parseInt(timeArray[1], 10);
+        var totalMin;
+        if (timeArray[2] === undefined) {
+            // user has played less than hour
+            var minToSec = timeArray[0] * 60;
+            var sec = timeArray[1];
+            totalMin = (parseInt(minToSec, 10) + parseInt(sec, 10)) / 60;
+        } else {
+            var hoursToMin = timeArray[0] * 60;
+            totalMin = hoursToMin + parseInt(timeArray[1], 10);
+        }
         var divider = totalMin / 10;
         var returnValue = (value / divider);
         if (isObjTime) {
@@ -1110,7 +1150,7 @@
                     return "00:" + seconds;
                 }
             } else if (seconds < 3600) {
-                var minutes = Math.floor((seconds / 60).toFixed(1));
+                var minutes = Math.floor(seconds / 60);
                 var newSeconds = seconds - (minutes * 60)
                 if (newSeconds < 10) {
                     return minutes + ":0" + newSeconds;
@@ -1119,8 +1159,8 @@
                 }
             }
         } else {
-            var hours = Math.floor((seconds / 360).toFixed(1));
-            var minutes = Math.floor((seconds / 60).toFixed(1));
+            var hours = Math.floor(seconds / 360);
+            var minutes = Math.floor(seconds / 60);
         }
         if (returnValue >= 100) {
             return (returnValue).toFixed(0);

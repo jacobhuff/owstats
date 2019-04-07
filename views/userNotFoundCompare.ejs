@@ -1,11 +1,11 @@
 <% include partials/header %>
-
+<% var path = "/user/" + username + "/compare/platform=" + platform; %>
     <div class="container">
         <div id="error-container">
             <div id="error-message">Oops, that username does not exist!</div>
         </div>
-        <form id="return-form" method="post" action="/user-not-found">
-            <button id="return-button" type="submit" name="return-button">Return to Home Page</button>
+        <form id="return-form" method="post" action="<%= path %>">
+            <button id="return-button" type="submit" name="return-button">Return to Compare Page</button>
         </form>
     </div>
 
